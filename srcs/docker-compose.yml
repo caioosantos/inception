@@ -1,0 +1,13 @@
+services:
+  nginx:
+    build: ./requirements/build
+
+  mariadb:
+    build: ./requirements/mariadb
+
+  wordpress:
+    build: ./requirements/wordpress
+
+networks:
+  wp-network:
+    driver: bridge
