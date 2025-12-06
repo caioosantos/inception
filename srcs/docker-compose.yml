@@ -1,12 +1,29 @@
+version: "3.8"
 services:
   nginx:
     build: ./requirements/build
 
   mariadb:
     build: ./requirements/mariadb
+    container_name: mariadb
+    restart: unless-stopped
+
+    volumes:
+      - /home/cbrito-s/data/mariadb:/var/lib/mysql
+    networks:
+      - wp-network
 
   wordpress:
     build: ./requirements/wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+
+    volumes:
+      - /home/cbrito-s/data/wordpress:/var/www/html
+    networks:
+      - wp-network
 
 networks:
   wp-network:
