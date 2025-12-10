@@ -1,10 +1,10 @@
 FROM debian:12-slim
 
 RUN apt-get update \
-	&& apt-get install -y --no-instalar-recommends \
-		php8.2-fpm php8.2-mysqli php8.2-curl php8.2-xml php8.2-mbstring php8.2-zip \
-		curl mariadb-client ca-certificates \
-		su-exec tini \
+	&& apt-get install -y \
+		php8.2-fpm php8.2-mysql php8.2-xml php8.2-mbstring \
+		curl wget ca-certificates unzip \
+		tini \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/www/html \

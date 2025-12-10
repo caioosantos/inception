@@ -10,6 +10,7 @@ up:
 
 down:
 	$(DOCKER) down
+	sudo rm -rf /home/cbrito-s/data
 
 clean:
 

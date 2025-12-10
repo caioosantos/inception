@@ -1,7 +1,15 @@
 version: "3.8"
 services:
   nginx:
-    build: ./requirements/build
+    # build: ./requirements/build
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - /home/cbrito-s/data/wordpress:/usr/share/nginx/html
+    networks:
+      - wp-network
 
   mariadb:
     build: ./requirements/mariadb

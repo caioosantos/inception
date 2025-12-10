@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Sai do script se retornar status diferente de zero
-set -u pipefail
+set -e
 
 # Preparar o diretório de dados
 DB_DIR="/var/lib/mysql"
@@ -15,16 +15,16 @@ if [ ! -d "${DB_DIR}/mysql" ]; then
 	mysql_install_db --user=mysql --datadir=${DB_DIR}
 
 	# Iniciar o MariaDB temporariamente para configuração
-	mysqld --user=mysql --datadir=${DB_DIR} --skip_working &
-	MYSQL_PID="!$"
+	mysqld --user=mysql --datadir=${DB_DIR} &
+	MYSQL_PID="$!"
 
 	# Aguardar o MariaDB iniciar
-	sleep 5
+	sleep 2
 
 	# Criar banco de dados e usuário
 	mysql -uroot <<-EOF
 		CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
-		CREATE USER IF NOT EXITST '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD};
+		CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 		GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 		ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 		FLUSH PRIVILEGES;
@@ -36,4 +36,4 @@ EOF
 fi
 
 # Rodar o mysqld em foreground
-exec --user=mysql --datadir=${DB_DIR}
+exec mysqld --user=mysql --datadir=${DB_DIR}

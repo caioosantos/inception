@@ -3,11 +3,14 @@ FROM debian:12-slim
 
 # RUN atualizar, instalar
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
+	&& apt-get install -y \
 		mariadb-server \
 		mariadb-client \
 		tini \
 	&& rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /run/mysqld \
+	&& chown -R mysql:mysql /run/mysqld /var/lib/mysql
 
 # copiar o código .sh
 COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
