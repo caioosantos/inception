@@ -7,7 +7,11 @@ services:
     build: ./requirements/mariadb
     container_name: mariadb
     restart: unless-stopped
-
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - /home/cbrito-s/data/mariadb:/var/lib/mysql
     networks:
@@ -19,6 +23,25 @@ services:
     restart: unless-stopped
     depends_on:
       - mariadb
+    environment:
+      # Conf do banco de dados
+      DB_DATABASE: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_HOST: ${MYSQL_HOST}
+
+      # Conf do WordPress
+      WP_URL: ${WP_URL}
+
+      # Usuário ADMIN
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+
+      # Usuário adicional
+      WP_USER: ${WP_USER}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
+      WP_USER_PASSWORD: ${WP_USER_PASSWORD}
 
     volumes:
       - /home/cbrito-s/data/wordpress:/var/www/html
