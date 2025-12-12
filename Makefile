@@ -1,4 +1,4 @@
-DOCKER = sudo docker compose
+DOCKER = docker-compose
 DOCKER_SRCS = ./srcs/docker-compose.yml
 LOGIN = cbrito-s
 

@@ -24,10 +24,6 @@ if [ ! -f "${WP_DIR}/wp-config.php" ]; then
 		${WP_CLI} core download --allow-root
 	fi
 
-	# Aguardar o banco de dados estar pronto
-	# until mariadb -h"${DB_HOST}" -u"${DB_USER}" -p"${DB_PASSWORD}" -e "SELECT 1" >/dev/null 2>&1; do
-	# 	sleep 2
-	# done
 
 	# Criar configuração do WordPress
 	${WP_CLI} config create \

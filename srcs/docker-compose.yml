@@ -9,12 +9,13 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - /home/cbrito-s/data/wordpress:/var/www/html:caio
+      - /home/cbrito-s/data/wordpress:/var/www/html:ro
     networks:
       - wp-network
     restart: unless-stopped
 
   mariadb:
+    image: mariadb
     build: ./requirements/mariadb
     container_name: mariadb
     restart: unless-stopped
@@ -29,6 +30,7 @@ services:
       - wp-network
 
   wordpress:
+    image: wordpress
     build: ./requirements/wordpress
     container_name: wordpress
     restart: unless-stopped
