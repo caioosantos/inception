@@ -1,15 +1,18 @@
 version: "3.8"
 services:
   nginx:
-    # build: ./requirements/build
-    image: nginx:latest
+    image: nginx
+    build: ./requirements/nginx
     container_name: nginx
     ports:
-      - "8080:80"
+      - "443:443"
+    depends_on:
+      - wordpress
     volumes:
-      - /home/cbrito-s/data/wordpress:/usr/share/nginx/html
+      - /home/cbrito-s/data/wordpress:/var/www/html:caio
     networks:
       - wp-network
+    restart: unless-stopped
 
   mariadb:
     build: ./requirements/mariadb
