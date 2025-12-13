@@ -3,19 +3,13 @@
 # Sai do script se retornar status diferente de zero
 set -e
 
-# Preparar o diretório de dados
-DB_DIR="/var/lib/mysql"
-mkdir -p ${DB_DIR}
-chown -R mysql:mysql ${DB_DIR}
-chmod 700 ${DB_DIR}
-
 # Verificar se o banco já foi inicializado
-if [ ! -d "${DB_DIR}/mysql" ]; then
+if [ ! -d "/var/lib/mysql/mysql" ]; then
 	# Inicializar o MariaDB
-	mysql_install_db --user=mysql --datadir=${DB_DIR}
+	mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 	# Iniciar o MariaDB temporariamente para configuração
-	mysqld --user=mysql --datadir=${DB_DIR} &
+	mysqld --user=mysql --datadir=/var/lib/mysql &
 	MYSQL_PID="$!"
 
 	# Aguardar o MariaDB iniciar
@@ -28,12 +22,12 @@ if [ ! -d "${DB_DIR}/mysql" ]; then
 		GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 		ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 		FLUSH PRIVILEGES;
+	EOF
 
-EOF
 	# Parar o MariaDB temporário
 	kill ${MYSQL_PID}
 	wait ${MYSQL_PID}
 fi
 
 # Rodar o mysqld em foreground
-exec mysqld --user=mysql --datadir=${DB_DIR}
+exec mysqld --user=mysql --datadir=/var/lib/mysql

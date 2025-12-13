@@ -9,7 +9,7 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - /home/cbrito-s/data/wordpress:/var/www/html:ro
+      - wp_volume:/var/www/html:ro
     networks:
       - wp-network
     restart: unless-stopped
@@ -25,7 +25,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - /home/cbrito-s/data/mariadb:/var/lib/mysql
+      - mysql:/var/lib/mysql
     networks:
       - wp-network
 
@@ -57,9 +57,26 @@ services:
       WP_USER_PASSWORD: ${WP_USER_PASSWORD}
 
     volumes:
-      - /home/cbrito-s/data/wordpress:/var/www/html
+      - wp_volume:/var/www/html
     networks:
       - wp-network
+
+volumes:
+  wp_volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/cbrito-s/data/wordpress
+
+  mysql:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/cbrito-s/data/mysql
+
+
 
 networks:
   wp-network:

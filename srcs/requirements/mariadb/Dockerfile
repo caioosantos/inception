@@ -10,7 +10,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /run/mysqld \
-	&& chown -R mysql:mysql /run/mysqld /var/lib/mysql
+	&& chown -R mysql:mysql /run/mysqld
 
 # copiar o código .sh
 COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
